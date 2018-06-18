@@ -342,3 +342,84 @@ html, body {
 .TicTacToeSpace {
   padding: 25px;
 }
+
+
+
+.lostcities-card {
+  width: 37px;
+  height: 48px;
+  margin: 4px;
+  padding: 2px;
+  min-height: 48px;
+  float: left;
+  border-radius: 5px;
+}
+
+.lostcities-card-front {
+  background-color: rgb(251, 246, 225);
+}
+
+.lostcities-deck {
+  color: white;
+  background-color: brown;
+}
+.lostcities-deck div {
+  text-align: center;
+}
+
+.lostcities-p2box {
+  width: 300px;
+  height: 60px;
+  margin: 5px;
+  padding: 2px;
+  min-height: 60px;
+  float: left;
+  border-radius: 5px;
+  border: 1px solid black;
+}
+
+.lostcities-minicard {
+  width: 10px;
+  height: 15px;
+  margin: 1px;
+  padding: 1px;
+  min-height: 15px;
+  float: left;
+  border-radius: 3px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.lostcities-pile {
+  width: 52px;
+  height: 100px;
+  margin: 5px;
+  padding: 2px;
+  min-height: 100px;
+  float: left;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.lostcities-pilecontainer {
+  width: 65px;
+  height: 210px;
+  margin: 4px;
+  padding: 2px;
+  min-height: 210px;
+  float: left;
+}
+
+
+
+.lostcities-number{
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  padding: 7px;
+}
+
+.lostcities-name{
+  display: flex;
+  justify-content: center;
+}

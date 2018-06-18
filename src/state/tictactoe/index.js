@@ -79,7 +79,7 @@ function placeOnBoard(state, payload) {
 }
 
 function reducer(state = initialize(), {type, payload}) {
-  console.log(state, type, payload);
+  // console.log(state, type, payload);
   switch (type) {
     case startGame.type:
       return initialize();
