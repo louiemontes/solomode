@@ -29,7 +29,7 @@ class MiniCard extends Component {
 
     return(
       <div className="lostcities-minicard" style={style}>
-        {card.value || '$'}
+        <span>{card.value || '$'}</span>
       </div>
     );
   }
@@ -45,7 +45,7 @@ class LCCard extends Component {
       style.cursor = 'pointer';
     }
     if(this.props.selected){
-      style.boxShadow = '0 4px 5px 0 rgba(255,0,0,.14),0 1px 10px 0 rgba(255,0,0,.72),0 2px 4px -1px rgba(0,0,0,.2)';
+      style.boxShadow = '0 4px 5px 0 rgba(255,0,0,.34),0 1px 10px 0 rgba(255,0,0,.72),0 2px 4px -1px rgba(0,0,0,.2)';
     }
     return(
       <div className="mdl-shadow--4dp lostcities-card lostcities-card-front" style={style} onClick={this.props.onClick}>
@@ -102,7 +102,7 @@ class LostCities extends Component {
           </div>
           <div style={{width:'100%', float: 'left'}}/>
           <div>
-            <div className="mdl-shadow--4dp lostcities-card lostcities-deck" style={{boxShadow: game.selectedPile === -1 ? 'brown 0px 0px 10px 5px' : 'none' }} onClick={() => this.props.selectPile(-1)}>
+            <div className="mdl-shadow--4dp lostcities-card lostcities-deck" style={{boxShadow: game.selectedPile === -1 ? 'red 0px 0px 10px 5px' : undefined }} onClick={() => this.props.selectPile(-1)}>
               <div>deck</div>
               <div>{game.deck.length}</div>
             </div>
