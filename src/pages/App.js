@@ -7,8 +7,17 @@ class App extends Component {
   render() {
     return (
       <Layout>
-        <Link to="/fs">For Sale</Link>
-        <Link to="/ttt">Tic Tac Toe</Link>
+        <ul>
+          <li>
+            <Link to="/fs">For Sale</Link>
+          </li>
+          <li>
+            <Link to="/ttt">Tic Tac Toe</Link>
+          </li>
+          <li>
+            <Link to="/lc">Lost Cities</Link>
+          </li>
+        </ul>
       </Layout>
     );
   }
