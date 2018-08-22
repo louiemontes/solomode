@@ -8,17 +8,18 @@ class Layout extends Component {
   render() {
     return (
       <div>
-        <Header/>
-        <main className="mdl-layout__content">
-          <div className="page-content">
+        <Header />
+        <main className="mdl-layout__content" style={{ display: 'flex' }}>
+          <div className="page-content" style={{ margin: '50px auto' }}>
             {this.props.children}
           </div>
         </main>
-        <Footer/>
+        <Footer />
       </div>
     );
   }
 }
+
 
 
 
