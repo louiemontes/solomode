@@ -1,5 +1,5 @@
 import { shuffle, reduce, fill, sortBy } from 'lodash';
-import { makeActionCreator } from 'cooldux';
+import { makeActionCreator, wrapDispatch } from '../../lib/actions';
 import { useReducer } from 'react';
 
 import createDeck from './cards';
@@ -193,20 +193,14 @@ function reducer(state = initialState, {type, payload}) {
     }
 }
 
-function wrap(func, dispatch) {
-  return function(...args) {
-    dispatch(func(...args));
-  }
-}
-
 export default function useGameState() {
   const [state, dispatch] = useReducer(reducer, initialState);
   return [state, {
-    startGame: wrap(startGame, dispatch),
-    selectPile: wrap(selectPile, dispatch),
-    selectMyCard: wrap(selectMyCard, dispatch),
-    playCard: wrap(playCard, dispatch),
-    discardCard: wrap(discardCard, dispatch),
-    drawCard: wrap(drawCard, dispatch),
+    startGame: wrapDispatch(startGame, dispatch),
+    selectPile: wrapDispatch(selectPile, dispatch),
+    selectMyCard: wrapDispatch(selectMyCard, dispatch),
+    playCard: wrapDispatch(playCard, dispatch),
+    discardCard: wrapDispatch(discardCard, dispatch),
+    drawCard: wrapDispatch(drawCard, dispatch),
   }];
 }

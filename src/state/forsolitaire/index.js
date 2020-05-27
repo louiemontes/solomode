@@ -1,5 +1,5 @@
 import { shuffle, filter, find, reduce } from 'lodash';
-import { makeActionCreator } from 'cooldux';
+import { makeActionCreator, wrapDispatch } from '../../lib/actions';
 import { useReducer } from 'react';
 import { allProperties, allChecks } from './cards';
 
@@ -226,21 +226,16 @@ function reducer(state = initialState, {type, payload}) {
     }
 }
 
-function wrap(func, dispatch) {
-  return function(...args) {
-    dispatch(func(...args));
-  }
-}
 
 export default function useGameState() {
   const [state, dispatch] = useReducer(reducer, initialState);
   return [state, {
-    startGame: wrap(startGame, dispatch),
-    selectBid: wrap(selectBid, dispatch),
-    placeBid: wrap(placeBid, dispatch),
-    selectProp: wrap(selectProp, dispatch),
-    sellProp: wrap(sellProp, dispatch),
-    nextSell: wrap(nextSell, dispatch),
+    startGame: wrapDispatch(startGame, dispatch),
+    selectBid: wrapDispatch(selectBid, dispatch),
+    placeBid: wrapDispatch(placeBid, dispatch),
+    selectProp: wrapDispatch(selectProp, dispatch),
+    sellProp: wrapDispatch(sellProp, dispatch),
+    nextSell: wrapDispatch(nextSell, dispatch),
   }];
 }
 
