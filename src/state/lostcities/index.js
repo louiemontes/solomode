@@ -1,17 +1,15 @@
 import { shuffle, reduce, fill, sortBy } from 'lodash';
 import { makeActionCreator } from 'cooldux';
+import { useReducer } from 'react';
 
 import createDeck from './cards';
 
-// console.log('allprops', allProperties, allChecks);
-
-export const startGame = makeActionCreator();
-export const selectPile = makeActionCreator();
-export const selectDeck = makeActionCreator();
-export const selectMyCard = makeActionCreator();
-export const playCard = makeActionCreator();
-export const discardCard = makeActionCreator();
-export const drawCard = makeActionCreator();
+const startGame = makeActionCreator();
+const selectPile = makeActionCreator();
+const selectMyCard = makeActionCreator();
+const playCard = makeActionCreator();
+const discardCard = makeActionCreator();
+const drawCard = makeActionCreator();
 
 function initialize(){
   const deck = shuffle(createDeck());
@@ -162,11 +160,13 @@ function handleSelectMyCard(state, cardIndex) {
   return {...state, selectedCard: cardIndex}
 }
 
-function reducer(state = initialize(), {type, payload}) {
+const initialState = initialize();
+
+function reducer(state = initialState, {type, payload}) {
 
   switch (type) {
     case startGame.type:
-      return initialize();
+      return initialState;
     case selectPile.type:
       return handleSelectPile(state, payload);
     case selectMyCard.type:
@@ -194,4 +194,20 @@ function reducer(state = initialize(), {type, payload}) {
     }
 }
 
-export default reducer;
+function wrap(func, dispatch) {
+  return function(...args) {
+    dispatch(func(...args));
+  }
+}
+
+export default function useGameState() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return [state, {
+    startGame: wrap(startGame, dispatch),
+    selectPile: wrap(selectPile, dispatch),
+    selectMyCard: wrap(selectMyCard, dispatch),
+    playCard: wrap(playCard, dispatch),
+    discardCard: wrap(discardCard, dispatch),
+    drawCard: wrap(drawCard, dispatch),
+  }];
+}

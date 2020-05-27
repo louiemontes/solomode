@@ -1,16 +1,14 @@
 import { shuffle, filter, find, reduce } from 'lodash';
 import { makeActionCreator } from 'cooldux';
-
+import { useReducer } from 'react';
 import { allProperties, allChecks } from './cards';
 
-// console.log('allprops', allProperties, allChecks);
-
-export const startGame = makeActionCreator();
-export const selectBid = makeActionCreator();
-export const placeBid = makeActionCreator();
-export const selectProp = makeActionCreator();
-export const sellProp = makeActionCreator();
-export const nextSell = makeActionCreator();
+const startGame = makeActionCreator();
+const selectBid = makeActionCreator();
+const placeBid = makeActionCreator();
+const selectProp = makeActionCreator();
+const sellProp = makeActionCreator();
+const nextSell = makeActionCreator();
 
 function drawCards(deck,num){
   const retVal = [];
@@ -205,11 +203,13 @@ function handleSellProperty(state, payload){
   return {...state, myProps, jessProps, gChecks, phase, marketChecks, selectedProp, round, jessCheckReward, myCheckReward, jessSoldProp, jessUnsoldProp, mySoldProp, myScore, jessScore, winner}
 }
 
-function reducer(state = initialize(), {type, payload}) {
+const initialState = initialize();
+
+function reducer(state = initialState, {type, payload}) {
 
   switch (type) {
     case startGame.type:
-      return initialize();
+      return initialState;
     case selectBid.type:
       // console.log('forsolitaireReducer', type, payload);
       return {...state, selectedBid: payload};
@@ -226,4 +226,21 @@ function reducer(state = initialize(), {type, payload}) {
     }
 }
 
-export default reducer;
+function wrap(func, dispatch) {
+  return function(...args) {
+    dispatch(func(...args));
+  }
+}
+
+export default function useGameState() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return [state, {
+    startGame: wrap(startGame, dispatch),
+    selectBid: wrap(selectBid, dispatch),
+    placeBid: wrap(placeBid, dispatch),
+    selectProp: wrap(selectProp, dispatch),
+    sellProp: wrap(sellProp, dispatch),
+    nextSell: wrap(nextSell, dispatch),
+  }];
+}
+
