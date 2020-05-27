@@ -39,7 +39,6 @@ function hasVal(val) {
 }
 
 function handlePlayCard(state) {
-  console.log('handlePlayCard', state.selectedCard);
   const myCard = state.myCards[state.selectedCard];
   const myNewCards = [];
   state.myCards.forEach((c, i) => {

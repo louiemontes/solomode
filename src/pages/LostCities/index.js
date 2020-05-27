@@ -57,8 +57,6 @@ function LCCard (props) {
 export default function LostCities () {
 
     const [game, {selectPile, selectMyCard, playCard, discardCard, drawCard, startGame}] = useGameState();
-
-    console.log('LC', game);
     const controlBtnStyle = {float:'left', marginLeft: '5px'};
     let controls = (
       <div>
