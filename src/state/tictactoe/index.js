@@ -1,12 +1,10 @@
-import { makeActionCreator } from 'cooldux';
+import { makeActionCreator, wrapDispatch } from '../../lib/actions';
 import { reduce, sample } from 'lodash';
 import { winPositionPatterns } from './patterns';
+import { useReducer } from 'react';
 
-export const startGame = makeActionCreator();
-export const markSquare = makeActionCreator();
-
-//"\u00a0"
-
+const startGame = makeActionCreator();
+const markSquare = makeActionCreator();
 
 function initialize(){
   const board = new Array(9).fill("");
@@ -16,6 +14,7 @@ function initialize(){
     winningLocations: []
   }
 };
+
 function checkSpaces(state, player){
   const { board } = state;
   let win = false;
@@ -57,11 +56,14 @@ function checkGameOver(state) {
 
 function placeOnBoard(state, payload) {
   // leave it alone if string already there
-  if (state.board[payload] ||  state.winner ) {
+  if (state.board[payload] || state.winner ) {
     return state;
   }
-  state.board[payload] = "x";
 
+  state = {...state};
+  state.board = [...state.board];
+  state.board[payload] = "x";
+  
   if (!checkGameOver(state)) {
     // ai take "o" turn
     // otherwise place where fits
@@ -75,11 +77,12 @@ function placeOnBoard(state, payload) {
     state.board[positionChoice] = "o";
     checkGameOver(state)
   }
-  return {...state};
+  return state;
 }
 
-function reducer(state = initialize(), {type, payload}) {
-  // console.log(state, type, payload);
+const initialState = initialize();
+
+function reducer(state = initialState, {type, payload}) {
   switch (type) {
     case startGame.type:
       return initialize();
@@ -90,4 +93,10 @@ function reducer(state = initialize(), {type, payload}) {
   }
 }
 
-export default reducer;
+export default function useGameState() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return [state, {
+    startGame: wrapDispatch(startGame, dispatch),
+    markSquare: wrapDispatch(markSquare, dispatch)
+  }]
+}

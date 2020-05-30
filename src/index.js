@@ -6,25 +6,20 @@ import './index.css';
 import App from './pages/App';
 import registerServiceWorker from './registerServiceWorker';
 
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
-import reducers from './state';
+
 import ForSolitaire from './pages/ForSolitaire';
 import TicTacToe from './pages/TicTacToe';
 import LostCities from './pages/LostCities';
 import Risky from './pages/Risky';
-
-import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
-import thunkMiddleware from 'redux-thunk';
 
 const theme = createMuiTheme({
  palette: {
    primary: blue,
  },
 });
-
 
 ReactDOM.render((
   <MuiThemeProvider theme={theme}>

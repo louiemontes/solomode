@@ -1,6 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {selectPile, selectDeck, selectMyCard, playCard, discardCard, drawCard, startGame} from '../../state/lostcities';
+import React from 'react';
+import useGameState from '../../state/lostcities';
 import {Button} from '@material-ui/core';
 import Layout from '../Layout';
 
@@ -16,76 +15,66 @@ function hasVal(val) {
   return val || val === 0;
 }
 
-class MiniCard extends Component {
+function MiniCard ({ card, backgroundColor }) {
 
-  render(){
-    const { card } = this.props;
-    // console.log('minicard', card);
-    const style = {
-      backgroundColor: this.props.backgroundColor || '#FAFBE6',
-      border : '1px solid ' + colors[card.suit],
-      color: colors[card.suit]
-    };
+  const style = {
+    backgroundColor: backgroundColor || '#FAFBE6',
+    border : '1px solid ' + colors[card.suit],
+    color: colors[card.suit]
+  };
 
-    return(
-      <div className="lostcities-minicard" style={style}>
-        <span>{card.value || '$'}</span>
-      </div>
-    );
-  }
+  return(
+    <div className="lostcities-minicard" style={style}>
+      <span>{card.value || '$'}</span>
+    </div>
+  );
+  
 }
 
-class LCCard extends Component {
-
-  render(){
-    const style = {
-      backgroundColor: this.props.backgroundColor || '#FAFBE6'
-    };
-    if(this.props.canClick){
-      style.cursor = 'pointer';
-    }
-    if(this.props.selected){
-      style.boxShadow = '0 4px 5px 0 rgba(255,0,0,.34),0 1px 10px 0 rgba(255,0,0,.72),0 2px 4px -1px rgba(0,0,0,.2)';
-    }
-    return(
-      <div className="mdl-shadow--4dp lostcities-card lostcities-card-front" style={style} onClick={this.props.onClick}>
-        <div className="lostcities-number" style={{color: colors[this.props.suit]}}>
-          {this.props.value || '$'}
-        </div>
-        <div className="lostcities-name">
-         {this.props.name}
-        </div>
-      </div>
-    );
+function LCCard (props) {
+  const style = {
+    backgroundColor: props.backgroundColor || '#FAFBE6'
+  };
+  if(props.canClick){
+    style.cursor = 'pointer';
   }
+  if(props.selected){
+    style.boxShadow = '0 4px 5px 0 rgba(255,0,0,.34),0 1px 10px 0 rgba(255,0,0,.72),0 2px 4px -1px rgba(0,0,0,.2)';
+  }
+  return(
+    <div className="mdl-shadow--4dp lostcities-card lostcities-card-front" style={style} onClick={props.onClick}>
+      <div className="lostcities-number" style={{color: colors[props.suit]}}>
+        {props.value || '$'}
+      </div>
+      <div className="lostcities-name">
+        {props.name}
+      </div>
+    </div>
+  );
 }
 
 
-class LostCities extends Component {
+export default function LostCities () {
 
-  render() {
-
-    const { game } = this.props;
-
-    console.log('LC', game);
+    const [game, {selectPile, selectMyCard, playCard, discardCard, drawCard, startGame}] = useGameState();
     const controlBtnStyle = {float:'left', marginLeft: '5px'};
     let controls = (
       <div>
-        <Button color="primary" style={controlBtnStyle} variant="contained" onClick={this.props.playCard} disabled={!hasVal(game.selectedCard) || !game.canPlaceCard} key="playBtn">Play Card</Button>
-        <Button color="primary" style={controlBtnStyle} variant="contained" onClick={this.props.discardCard} disabled={!hasVal(game.selectedCard)} key="discardBtn">Discard</Button>
+        <Button color="primary" style={controlBtnStyle} variant="contained" onClick={playCard} disabled={!hasVal(game.selectedCard) || !game.canPlaceCard} key="playBtn">Play Card</Button>
+        <Button color="primary" style={controlBtnStyle} variant="contained" onClick={discardCard} disabled={!hasVal(game.selectedCard)} key="discardBtn">Discard</Button>
       </div>
     );
 
     if(game.phase === 'draw') {
       controls = (
         <div>
-          <Button color="primary" style={controlBtnStyle} variant="contained" onClick={this.props.drawCard} disabled={!hasVal(game.selectedPile)}>Draw Card</Button>
+          <Button color="primary" style={controlBtnStyle} variant="contained" onClick={drawCard} disabled={!hasVal(game.selectedPile)}>Draw Card</Button>
         </div>
       );
     } else if (game.phase === 'gameover') {
       controls = (
         <div>
-          <Button color="primary" style={controlBtnStyle} variant="contained" onClick={this.props.startGame}>New Game</Button>
+          <Button color="primary" style={controlBtnStyle} variant="contained" onClick={startGame}>New Game</Button>
         </div>
       );
     }
@@ -102,7 +91,7 @@ class LostCities extends Component {
           </div>
           <div style={{width:'100%', float: 'left'}}/>
           <div>
-            <div className="mdl-shadow--4dp lostcities-card lostcities-deck" style={{boxShadow: game.selectedPile === -1 ? 'red 0px 0px 10px 5px' : undefined }} onClick={() => this.props.selectPile(-1)}>
+            <div className="mdl-shadow--4dp lostcities-card lostcities-deck" style={{boxShadow: game.selectedPile === -1 ? 'red 0px 0px 10px 5px' : undefined }} onClick={() => selectPile(-1)}>
               <div>deck</div>
               <div>{game.deck.length}</div>
             </div>
@@ -135,7 +124,7 @@ class LostCities extends Component {
                   return <MiniCard card={mc} key={"mc" + j} />;
                 })}
                 </div>
-                <div className="lostcities-pile" style={style} onClick={() => this.props.selectPile(i)} key={i}>
+                <div className="lostcities-pile" style={style} onClick={() => selectPile(i)} key={i}>
                 {cardForPile ? (<LCCard value={cardForPile.value} selected={false} suit={cardForPile.suit} />) : ''}
                 {extrasDisplay}
                 </div>
@@ -155,7 +144,7 @@ class LostCities extends Component {
             if(i === game.selectedCard) {
               selected = true;
             }
-            return <LCCard value={lcc.value} selected={selected} suit={lcc.suit} key={"mycard" + i} onClick={() => this.props.selectMyCard(i)} />;
+            return <LCCard value={lcc.value} selected={selected} suit={lcc.suit} key={"mycard" + i} onClick={() => selectMyCard(i)} />;
           })}
           </div>
           <div style={{width:'100%', float: 'left'}}/>
@@ -175,17 +164,5 @@ class LostCities extends Component {
         <div style={{width:'100%', float: 'left'}}/>
       </Layout>
     );
-  }
+  
 }
-
-
-function mapStateToProps(state) {
-  const { lostcities } = state;
-
-  return {
-    game: lostcities
-  };
-}
-
-
-export default connect(mapStateToProps, {selectPile, selectDeck, selectMyCard, playCard, discardCard, startGame, drawCard})(LostCities);

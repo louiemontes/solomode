@@ -1,17 +1,15 @@
 import { shuffle, reduce, fill, sortBy } from 'lodash';
-import { makeActionCreator } from 'cooldux';
+import { makeActionCreator, wrapDispatch } from '../../lib/actions';
+import { useReducer } from 'react';
 
 import createDeck from './cards';
 
-// console.log('allprops', allProperties, allChecks);
-
-export const startGame = makeActionCreator();
-export const selectPile = makeActionCreator();
-export const selectDeck = makeActionCreator();
-export const selectMyCard = makeActionCreator();
-export const playCard = makeActionCreator();
-export const discardCard = makeActionCreator();
-export const drawCard = makeActionCreator();
+const startGame = makeActionCreator();
+const selectPile = makeActionCreator();
+const selectMyCard = makeActionCreator();
+const playCard = makeActionCreator();
+const discardCard = makeActionCreator();
+const drawCard = makeActionCreator();
 
 function initialize(){
   const deck = shuffle(createDeck());
@@ -41,7 +39,6 @@ function hasVal(val) {
 }
 
 function handlePlayCard(state) {
-  console.log('handlePlayCard', state.selectedCard);
   const myCard = state.myCards[state.selectedCard];
   const myNewCards = [];
   state.myCards.forEach((c, i) => {
@@ -162,11 +159,13 @@ function handleSelectMyCard(state, cardIndex) {
   return {...state, selectedCard: cardIndex}
 }
 
-function reducer(state = initialize(), {type, payload}) {
+const initialState = initialize();
+
+function reducer(state = initialState, {type, payload}) {
 
   switch (type) {
     case startGame.type:
-      return initialize();
+      return initialState;
     case selectPile.type:
       return handleSelectPile(state, payload);
     case selectMyCard.type:
@@ -194,4 +193,14 @@ function reducer(state = initialize(), {type, payload}) {
     }
 }
 
-export default reducer;
+export default function useGameState() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return [state, {
+    startGame: wrapDispatch(startGame, dispatch),
+    selectPile: wrapDispatch(selectPile, dispatch),
+    selectMyCard: wrapDispatch(selectMyCard, dispatch),
+    playCard: wrapDispatch(playCard, dispatch),
+    discardCard: wrapDispatch(discardCard, dispatch),
+    drawCard: wrapDispatch(drawCard, dispatch),
+  }];
+}
