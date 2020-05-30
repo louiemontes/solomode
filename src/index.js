@@ -6,17 +6,13 @@ import './index.css';
 import App from './pages/App';
 import registerServiceWorker from './registerServiceWorker';
 
-import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
-import reducers from './state';
+
 import ForSolitaire from './pages/ForSolitaire';
 import TicTacToe from './pages/TicTacToe';
 import LostCities from './pages/LostCities';
-
-import { Provider } from 'react-redux';
-import { applyMiddleware, createStore } from 'redux';
-import thunkMiddleware from 'redux-thunk';
 
 const theme = createMuiTheme({
  palette: {
@@ -24,20 +20,15 @@ const theme = createMuiTheme({
  },
 });
 
-const store = createStore(reducers, applyMiddleware(thunkMiddleware));
-
-
 ReactDOM.render((
-  <Provider store={store}>
-    <MuiThemeProvider theme={theme}>
-      <Router history={hashHistory}>
-        <Route path="/" component={App} />
-        <Route path="fs" component={ForSolitaire} />
-        <Route path="ttt" component={TicTacToe} />
-        <Route path="lc" component={LostCities} />
-      </Router>
-    </MuiThemeProvider>
-  </Provider>
+  <MuiThemeProvider theme={theme}>
+    <Router history={hashHistory}>
+      <Route path="/" component={App} />
+      <Route path="fs" component={ForSolitaire} />
+      <Route path="ttt" component={TicTacToe} />
+      <Route path="lc" component={LostCities} />
+    </Router>
+  </MuiThemeProvider>
 ),document.getElementById('root'));
 
 registerServiceWorker();
