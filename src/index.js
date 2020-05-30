@@ -13,6 +13,7 @@ import reducers from './state';
 import ForSolitaire from './pages/ForSolitaire';
 import TicTacToe from './pages/TicTacToe';
 import LostCities from './pages/LostCities';
+import Risky from './pages/Risky';
 
 import { Provider } from 'react-redux';
 import { applyMiddleware, createStore } from 'redux';
@@ -24,20 +25,17 @@ const theme = createMuiTheme({
  },
 });
 
-const store = createStore(reducers, applyMiddleware(thunkMiddleware));
-
 
 ReactDOM.render((
-  <Provider store={store}>
-    <MuiThemeProvider theme={theme}>
-      <Router history={hashHistory}>
-        <Route path="/" component={App} />
-        <Route path="fs" component={ForSolitaire} />
-        <Route path="ttt" component={TicTacToe} />
-        <Route path="lc" component={LostCities} />
-      </Router>
-    </MuiThemeProvider>
-  </Provider>
+  <MuiThemeProvider theme={theme}>
+    <Router history={hashHistory}>
+      <Route path="/" component={App} />
+      <Route path="fs" component={ForSolitaire} />
+      <Route path="ttt" component={TicTacToe} />
+      <Route path="lc" component={LostCities} />
+      <Route path="r" component={Risky} />
+    </Router>
+  </MuiThemeProvider>
 ),document.getElementById('root'));
 
 registerServiceWorker();

@@ -226,4 +226,23 @@ function reducer(state = initialize(), {type, payload}) {
     }
 }
 
-export default reducer;
+let actions;
+function getActions(dispatch) {
+  if (!actions) {
+    actions = {
+      startGame: wrapDispatch(startGame, dispatch),
+      selectBid: wrapDispatch(selectBid, dispatch),
+      placeBid: wrapDispatch(placeBid, dispatch),
+      selectProp: wrapDispatch(selectProp, dispatch),
+      sellProp: wrapDispatch(sellProp, dispatch),
+      nextSell: wrapDispatch(nextSell, dispatch),
+    };
+  }
+  return actions;
+}
+
+export default function useGameState() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  return [state, getActions(dispatch)];
+}
+
