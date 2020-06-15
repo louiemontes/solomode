@@ -1,5 +1,5 @@
 import React from 'react';
-import useGameState from '../../state/tictactoe';
+import useGameState from './state';
 import { Button } from '@material-ui/core';
 import Layout from '../Layout';
 import { ticTacToeSpace } from '../../lib/styles';
@@ -15,7 +15,7 @@ export default function TicTacToe () {
   
   return (
     <Layout>
-      <b>{game.statusMessage}</b>
+      {/* <b>{game.statusMessage}</b> */}
       <div className="TicTacToeSpace">
         <div>
           <Button onClick={() => markSquare(0)} style={{...ticTacToeSpace, boxShadow: includes(winningLocations, 0)? specShadow  : regShadow}}>{board[0] || ' '}</Button>

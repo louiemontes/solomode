@@ -17,7 +17,7 @@ function App () {
           <Link to="/lc">Lost Cities</Link>
         </li>
         <li>
-          <Link to="/r">Risky</Link>
+          <Link to="/r">Risky (WIP)</Link>
         </li>
       </ul>
     </Layout>

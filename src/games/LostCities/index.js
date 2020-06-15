@@ -1,5 +1,5 @@
 import React from 'react';
-import useGameState from '../../state/lostcities';
+import useGameState from './state';
 import {Button} from '@material-ui/core';
 import Layout from '../Layout';
 

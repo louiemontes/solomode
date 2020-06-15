@@ -3,17 +3,17 @@ import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory } from 'react-router';
 //import createHistory from "history/createHashHistory";
 import './index.css';
-import App from './pages/App';
+import App from './games/App';
 import registerServiceWorker from './registerServiceWorker';
 
 import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 import { createMuiTheme } from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 
-import ForSolitaire from './pages/ForSolitaire';
-import TicTacToe from './pages/TicTacToe';
-import LostCities from './pages/LostCities';
-import Risky from './pages/Risky';
+import ForSolitaire from './games/ForSolitaire';
+import TicTacToe from './games/TicTacToe';
+import LostCities from './games/LostCities';
+import Risky from './games/Risky';
 
 const theme = createMuiTheme({
  palette: {

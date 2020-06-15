@@ -1,5 +1,5 @@
 import React from 'react';
-import useGameState from '../../state/forsolitaire';
+import useGameState from './state';
 import {RadioGroup, Radio, Button, FormControlLabel} from '@material-ui/core';
 import Layout from '../Layout';
 
