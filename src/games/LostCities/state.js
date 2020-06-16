@@ -1,5 +1,5 @@
 import { shuffle, reduce, fill, sortBy } from 'lodash';
-import { makeActionCreator, wrapDispatch } from '../../../lib/actions';
+import { makeActionCreator, wrapFunctions } from '../../lib/actions';
 import { useReducer } from 'react';
 
 import createDeck from './cards';
@@ -195,12 +195,12 @@ function reducer(state = initialState, {type, payload}) {
 
 export default function useGameState() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  return [state, {
-    startGame: wrapDispatch(startGame, dispatch),
-    selectPile: wrapDispatch(selectPile, dispatch),
-    selectMyCard: wrapDispatch(selectMyCard, dispatch),
-    playCard: wrapDispatch(playCard, dispatch),
-    discardCard: wrapDispatch(discardCard, dispatch),
-    drawCard: wrapDispatch(drawCard, dispatch),
-  }];
+  return [state, wrapFunctions({
+    startGame,
+    selectPile,
+    selectMyCard,
+    playCard,
+    discardCard,
+    drawCard,
+  }, dispatch)];
 }

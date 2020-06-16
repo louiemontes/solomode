@@ -1,4 +1,4 @@
-import { makeActionCreator, wrapDispatch } from '../../../lib/actions';
+import { makeActionCreator, wrapFunctions } from '../../lib/actions';
 import { reduce, sample } from 'lodash';
 import { winPositionPatterns } from './patterns';
 import { useReducer } from 'react';
@@ -95,8 +95,8 @@ function reducer(state = initialState, {type, payload}) {
 
 export default function useGameState() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  return [state, {
-    startGame: wrapDispatch(startGame, dispatch),
-    markSquare: wrapDispatch(markSquare, dispatch)
-  }]
+  return [state, wrapFunctions({
+    startGame,
+    markSquare
+  }, dispatch)]
 }

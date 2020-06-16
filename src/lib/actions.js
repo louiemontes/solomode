@@ -15,3 +15,11 @@ export function wrapDispatch(func, dispatch) {
     dispatch(func(...args));
   }
 }
+
+export function wrapFunctions(funcs, dispatch) {
+  const wrapped = {};
+  for (const f in funcs) {
+    wrapped[f] = wrapDispatch(funcs[f], dispatch);
+  }
+  return wrapped;
+}

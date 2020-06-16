@@ -1,5 +1,5 @@
-import { makeActionCreator, wrapDispatch } from '../../lib/actions';
-import { reduce, sample, includes } from 'lodash';
+import { makeActionCreator, wrapFunctions } from '../../lib/actions';
+import { includes } from 'lodash';
 import { countries, connections, continents } from './countries';
 import { useReducer } from 'react';
 
@@ -38,8 +38,8 @@ function reducer(state = initialState, {type, payload}) {
 
 export default function useGameState() {
   const [state, dispatch] = useReducer(reducer, initialState);
-  return [state, {
-    startGame: wrapDispatch(startGame, dispatch),
-    hover: wrapDispatch(hover, dispatch)
-  }]
+  return [state, wrapFunctions({
+    startGame,
+    hover
+  }, dispatch)]
 }
